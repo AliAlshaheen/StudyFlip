@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="style.css" rel="stylesheet" />
+    <title>Flashcards</title>
+  </head>
+  <body>
+    <header>
+      <h1>Flashcards</h1>
+      <nav>
+        <button id="showCreate">Create</button>
+        <button id="showDecks">Decks</button>
+      </nav>
+    </header>
+    <main>
+      <div class="create-container">
+        <h2>Create A Deck</h2>
+        <form class="create-deck-form">
+          <input type="text" placeholder="Deck Name" id="deckName" />
+          <button type="submit">Create Deck</button>
+        </form>
+        <h2>Add A Card</h2>
+        <form class="create-card-form">
+          <select id="deckSelect"></select>
+          <input type="text" placeholder="Term/Question" id="cardTerm" />
+          <input type="text" placeholder="Definition/Answer" id="cardDef" />
+          <button type="submit">Add Card</button>
+        </form>
+      </div>
+      <div class="deck-list">
+        <h2>My Decks</h2>
+        <div class="decks"></div>
+      </div>
+      <div class="study-container">
+        <h2>Study Mode</h2>
+        <div class="study-card">
+          <div class="study-card-inner">
+            <div class="study-card-face study-card-front"></div>
+            <div class="study-card-face study-card-back"></div>
+          </div>
+        </div>
+        <div class="study-controls">
+          <button id="prevCard">Prev</button>
+          <button id="nextCard">Next</button>
+          <button id="endStudy">End Study</button>
+        </div>
+      </div>
+      <div class="test-container">
+        <h2>Test Mode</h2>
+        <div class="test-question"></div>
+        <div class="test-choices"></div>
+        <div class="test-result"></div>
+        <div class="test-controls">
+          <button id="nextQuestion">Next Question</button>
+          <button id="endTest">End Test</button>
+        </div>
+      </div>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
