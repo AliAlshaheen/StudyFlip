@@ -169,10 +169,20 @@ function showQuestion() {
 }
 function checkAnswer(choice) {
   const q = testQuestions[currentQuestionIndex];
-  if (choice === q.answer) {
-    testResultEl.textContent = "Correct!";
-  } else {
+  const buttons = document.querySelectorAll(".test-choices button");
+  buttons.forEach((b) => {
+    b.classList.remove("correct-choice", "incorrect-choice");
+    b.disabled = true;
+    if (b.textContent === q.answer) {
+      b.classList.add("correct-choice");
+    } else if (b.textContent === choice && choice !== q.answer) {
+      b.classList.add("incorrect-choice");
+    }
+  });
+  if (choice !== q.answer) {
     testResultEl.textContent = "Incorrect. Correct answer: " + q.answer;
+  } else {
+    testResultEl.textContent = "Correct!";
   }
 }
 function nextQuestionFn() {
