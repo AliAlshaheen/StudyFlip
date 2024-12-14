@@ -176,19 +176,15 @@ form button:hover {
   width: 300px;
   height: 200px;
   perspective: 1000px;
-  margin-bottom: 20px;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-}
-.study-card:hover {
-  transform: translateY(-2px);
+  will-change: transform;
 }
 .study-card-inner {
   position: relative;
   width: 100%;
   height: 100%;
-  transition: transform 0.8s;
+  transition: transform 0.4s ease;
   transform-style: preserve-3d;
+  will-change: transform;
 }
 .study-card.flipped .study-card-inner {
   transform: rotateY(180deg);
@@ -209,10 +205,7 @@ form button:hover {
   border-radius: 12px;
   padding: 20px;
   text-align: center;
-  transition: box-shadow 0.3s ease;
-}
-.study-card-face:hover {
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  will-change: transform;
 }
 .study-card-back {
   transform: rotateY(180deg);
