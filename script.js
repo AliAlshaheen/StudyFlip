@@ -23,10 +23,25 @@ const endTestBtn = document.getElementById("endTest");
 const testQuestionEl = document.querySelector(".test-question");
 const testChoicesEl = document.querySelector(".test-choices");
 const testResultEl = document.querySelector(".test-result");
+const editDeckContainer = document.querySelector(".edit-deck-container");
+const editDeckCardsContainer = document.querySelector(".edit-deck-cards");
+const deleteDeckBtn = document.getElementById("deleteDeckBtn");
+const closeEditDeck = document.getElementById("closeEditDeck");
+const editCardContainer = document.querySelector(".edit-card-container");
+const editCardForm = document.querySelector(".edit-card-form");
+const editCardTerm = document.getElementById("editCardTerm");
+const editCardDef = document.getElementById("editCardDef");
+const cancelEditCard = document.getElementById("cancelEditCard");
+const editDeckAddCardForm = document.querySelector(".edit-deck-add-card-form");
+const editDeckNewTerm = document.getElementById("editDeckNewTerm");
+const editDeckNewDef = document.getElementById("editDeckNewDef");
 let currentDeckIndex = null;
 let currentCardIndex = 0;
 let testQuestions = [];
 let currentQuestionIndex = 0;
+let editingDeckIndex = null;
+let editingCardIndex = null;
+
 function saveDecks() {
   localStorage.setItem("decks", JSON.stringify(decks));
 }
@@ -44,20 +59,31 @@ function renderDecks() {
       i +
       ')">Study</button><button onclick="startTest(' +
       i +
-      ')">Test</button></div>';
+      ')">Test</button><button onclick="editDeck(' +
+      i +
+      ')">Edit</button></div>';
     decksContainer.appendChild(el);
   });
   updateDeckSelect();
 }
 function updateDeckSelect() {
   deckSelect.innerHTML = "";
-  decks.forEach((d, i) => {
-    const op = document.createElement("option");
-    op.value = i;
-    op.textContent = d.name;
-    deckSelect.appendChild(op);
-  });
+  if (decks.length === 0) {
+    const placeholder = document.createElement("option");
+    placeholder.textContent = "Choose Deck";
+    placeholder.disabled = true;
+    placeholder.selected = true;
+    deckSelect.appendChild(placeholder);
+  } else {
+    decks.forEach((d, i) => {
+      const op = document.createElement("option");
+      op.value = i;
+      op.textContent = d.name;
+      deckSelect.appendChild(op);
+    });
+  }
 }
+
 function startStudy(i) {
   currentDeckIndex = i;
   currentCardIndex = 0;
@@ -66,6 +92,8 @@ function startStudy(i) {
   testContainer.style.display = "none";
   studyContainer.style.display = "flex";
   document.querySelector(".deck-list").style.display = "none";
+  editDeckContainer.style.display = "none";
+  editCardContainer.style.display = "none";
 }
 function renderStudyCard() {
   const deck = decks[currentDeckIndex];
@@ -92,6 +120,8 @@ function endStudyFn() {
   studyContainer.style.display = "none";
   createContainer.style.display = "none";
   testContainer.style.display = "none";
+  editDeckContainer.style.display = "none";
+  editCardContainer.style.display = "none";
   document.querySelector(".deck-list").style.display = "block";
 }
 studyCard.addEventListener("click", () => {
@@ -132,6 +162,8 @@ function startTest(i) {
   studyContainer.style.display = "none";
   testContainer.style.display = "flex";
   document.querySelector(".deck-list").style.display = "none";
+  editDeckContainer.style.display = "none";
+  editCardContainer.style.display = "none";
 }
 function generateTestQuestions(deck) {
   let arr = [...deck.cards];
@@ -204,11 +236,103 @@ showCreate.addEventListener("click", () => {
   studyContainer.style.display = "none";
   testContainer.style.display = "none";
   document.querySelector(".deck-list").style.display = "none";
+  editDeckContainer.style.display = "none";
+  editCardContainer.style.display = "none";
 });
 showDecks.addEventListener("click", () => {
   createContainer.style.display = "none";
   studyContainer.style.display = "none";
   testContainer.style.display = "none";
   document.querySelector(".deck-list").style.display = "block";
+  editDeckContainer.style.display = "none";
+  editCardContainer.style.display = "none";
+});
+function editDeck(i) {
+  editingDeckIndex = i;
+  renderEditDeck();
+  createContainer.style.display = "none";
+  studyContainer.style.display = "none";
+  testContainer.style.display = "none";
+  document.querySelector(".deck-list").style.display = "none";
+  editDeckContainer.style.display = "flex";
+  editCardContainer.style.display = "none";
+}
+function renderEditDeck() {
+  editDeckCardsContainer.innerHTML = "";
+  if (editingDeckIndex === null) return;
+  const d = decks[editingDeckIndex];
+  d.cards.forEach((c, i) => {
+    const cardEl = document.createElement("div");
+    cardEl.className = "edit-deck-card";
+    cardEl.innerHTML =
+      '<div class="edit-deck-card-content"><span>Term: ' +
+      c.term +
+      "</span><span>Definition: " +
+      c.def +
+      '</span></div><div class="edit-deck-card-actions"><button onclick="editCard(' +
+      i +
+      ')">Edit</button><button onclick="deleteCard(' +
+      i +
+      ')">Delete</button></div>';
+    editDeckCardsContainer.appendChild(cardEl);
+  });
+}
+deleteDeckBtn.addEventListener("click", () => {
+  if (editingDeckIndex === null) return;
+  decks.splice(editingDeckIndex, 1);
+  saveDecks();
+  editingDeckIndex = null;
+  editDeckContainer.style.display = "none";
+  document.querySelector(".deck-list").style.display = "block";
+  renderDecks();
+});
+closeEditDeck.addEventListener("click", () => {
+  editDeckContainer.style.display = "none";
+  document.querySelector(".deck-list").style.display = "block";
+});
+function deleteCard(i) {
+  if (editingDeckIndex === null) return;
+  decks[editingDeckIndex].cards.splice(i, 1);
+  saveDecks();
+  renderEditDeck();
+}
+function editCard(i) {
+  editingCardIndex = i;
+  const c = decks[editingDeckIndex].cards[i];
+  editCardTerm.value = c.term;
+  editCardDef.value = c.def;
+  editCardContainer.style.display = "flex";
+  editDeckContainer.style.display = "none";
+}
+editCardForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  if (editingDeckIndex === null || editingCardIndex === null) return;
+  const term = editCardTerm.value.trim();
+  const def = editCardDef.value.trim();
+  if (term !== "" && def !== "") {
+    decks[editingDeckIndex].cards[editingCardIndex] = { term, def };
+    saveDecks();
+    editCardContainer.style.display = "none";
+    editDeckContainer.style.display = "flex";
+    renderEditDeck();
+  }
+});
+cancelEditCard.addEventListener("click", () => {
+  editCardContainer.style.display = "none";
+  editDeckContainer.style.display = "flex";
+});
+
+editDeckAddCardForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  if (editingDeckIndex === null) return;
+  const term = editDeckNewTerm.value.trim();
+  const def = editDeckNewDef.value.trim();
+  if (term !== "" && def !== "") {
+    decks[editingDeckIndex].cards.push({ term, def });
+    saveDecks();
+    editDeckNewTerm.value = "";
+    editDeckNewDef.value = "";
+    renderEditDeck();
+  }
 });
 renderDecks();

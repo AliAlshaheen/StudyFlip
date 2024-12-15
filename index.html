@@ -23,7 +23,7 @@
         </form>
         <h2>Add A Card</h2>
         <form class="create-card-form">
-          <select id="deckSelect"></select>
+          <select id="deckSelect" placeholder="Term/Question"></select>
           <input type="text" placeholder="Term/Question" id="cardTerm" />
           <input type="text" placeholder="Definition/Answer" id="cardDef" />
           <button type="submit">Add Card</button>
@@ -56,6 +56,33 @@
           <button id="nextQuestion">Next Question</button>
           <button id="endTest">End Test</button>
         </div>
+      </div>
+      <div class="edit-deck-container">
+        <h2>Edit Deck</h2>
+        <div class="edit-deck-actions">
+          <button id="deleteDeckBtn" class="danger-button">Delete Deck</button>
+          <button id="closeEditDeck" class="close-button">Close</button>
+        </div>
+        <h3>Add New Card</h3>
+        <form class="edit-deck-add-card-form">
+          <input type="text" placeholder="Term/Question" id="editDeckNewTerm" />
+          <input
+            type="text"
+            placeholder="Definition/Answer"
+            id="editDeckNewDef"
+          />
+          <button type="submit">Add Card</button>
+        </form>
+        <div class="edit-deck-cards"></div>
+      </div>
+      <div class="edit-card-container">
+        <h2>Edit Card</h2>
+        <form class="edit-card-form">
+          <input type="text" id="editCardTerm" />
+          <input type="text" id="editCardDef" />
+          <button type="submit">Save</button>
+          <button type="button" id="cancelEditCard">Cancel</button>
+        </form>
       </div>
     </main>
     <script src="script.js"></script>

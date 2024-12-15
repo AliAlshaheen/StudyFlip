@@ -90,32 +90,57 @@ form button {
 form button:hover {
   background: #4158d0;
 }
+
 .deck-list,
 .study-container,
 .test-container,
-.create-container {
+.create-container,
+.edit-deck-container,
+.edit-card-container {
   background: #fff;
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex-direction: column;
+  gap: 20px;
 }
+
+/* Show the deck list by default */
+.deck-list {
+  display: block;
+}
+
+.study-container,
+.test-container,
+.create-container,
+.edit-deck-container,
+.edit-card-container {
+  display: none;
+}
+
 .deck-list:hover,
 .study-container:hover,
 .test-container:hover,
-.create-container:hover {
+.create-container:hover,
+.edit-deck-container:hover,
+.edit-card-container:hover {
   transform: translateY(-1px);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
+
 .deck-list h2,
 .study-container h2,
 .test-container h2,
-.create-container h2 {
+.create-container h2,
+.edit-deck-container h2,
+.edit-card-container h2 {
   margin-bottom: 10px;
   color: #333;
   font-weight: 700;
   letter-spacing: 0.5px;
 }
+
 .decks {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -150,6 +175,7 @@ form button:hover {
   display: flex;
   gap: 10px;
   justify-content: flex-end;
+  flex-wrap: wrap;
 }
 .deck-actions button {
   padding: 8px 16px;
@@ -165,9 +191,8 @@ form button:hover {
 .deck-actions button:hover {
   background: #4158d0;
 }
+
 .study-container {
-  display: none;
-  flex-direction: column;
   align-items: center;
   gap: 20px;
 }
@@ -203,9 +228,12 @@ form button:hover {
   background: #fff;
   border: 1px solid #ccc;
   border-radius: 12px;
-  padding: 20px;
+  padding: 30px;
   text-align: center;
   will-change: transform;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  overflow-y: auto;
 }
 .study-card-back {
   transform: rotateY(180deg);
@@ -228,12 +256,7 @@ form button:hover {
 .study-controls button:hover {
   background: #4158d0;
 }
-.test-container {
-  display: none;
-  flex-direction: column;
-  gap: 20px;
-  position: relative;
-}
+
 .test-question {
   font-size: 20px;
   margin-bottom: 10px;
@@ -283,9 +306,8 @@ form button:hover {
 .test-controls button:hover {
   background: #4158d0;
 }
+
 .create-container {
-  display: none;
-  flex-direction: column;
   gap: 20px;
 }
 .create-deck-form,
@@ -301,6 +323,81 @@ form button:hover {
   flex: 0 0 auto;
 }
 
+.edit-deck-actions {
+  display: flex;
+  gap: 10px;
+}
+.edit-deck-add-card-form input {
+  flex: 0 0 auto;
+}
+.edit-deck-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.edit-deck-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fafafa;
+  border: 1px solid #eee;
+  padding: 10px;
+  border-radius: 6px;
+}
+.edit-deck-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.edit-deck-card-content span {
+  font-size: 14px;
+}
+.edit-deck-card-actions {
+  display: flex;
+  gap: 10px;
+}
+.edit-deck-card-actions button {
+  padding: 5px 10px;
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+.edit-deck-card-actions button:hover {
+  background: #4158d0;
+}
+
+.edit-card-form {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.edit-card-form input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+.edit-card-form button {
+  padding: 10px 20px;
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+.edit-card-form button:hover {
+  background: #4158d0;
+}
+
 .correct-choice {
   background: #4caf50 !important;
   color: #fff !important;
@@ -312,11 +409,19 @@ form button:hover {
   transition: background-color 0.5s ease, color 0.5s ease;
 }
 
-@media (max-width: 600px) {
-  header h1 {
-    font-size: 20px;
-  }
-  .test-question {
-    font-size: 18px;
-  }
+.danger-button,
+.close-button {
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.danger-button:hover,
+.close-button:hover {
+  background: #4158d0;
 }
