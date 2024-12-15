@@ -83,7 +83,6 @@ function updateDeckSelect() {
     });
   }
 }
-
 function startStudy(i) {
   currentDeckIndex = i;
   currentCardIndex = 0;
@@ -321,7 +320,6 @@ cancelEditCard.addEventListener("click", () => {
   editCardContainer.style.display = "none";
   editDeckContainer.style.display = "flex";
 });
-
 editDeckAddCardForm.addEventListener("submit", (e) => {
   e.preventDefault();
   if (editingDeckIndex === null) return;
